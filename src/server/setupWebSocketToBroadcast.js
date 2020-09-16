@@ -1,25 +1,27 @@
 const WebSocket = require('ws');
 const pipeline = require('./pipeline');
 
-// function newWebSocket(socketName) {
-//   const wss = new WebSocket.Server({ noServer: true });
-//   wss.on('connection', (ctx) => {
-//     // print number of active connections
-//     console.log('#######connected##########', wss1.clients.size);
-//     // sent a message that we're good to proceed
-//     ctx.send('connection established.');
-//     // receive a message and Broadcast to everyone
-//     ctx.on('message', (message) => {
-//       pipeline.broadcastMessage(wss1.clients, message);
-//     });
+function newWebSocket() {
+  console.log('!!!!! NEW WEB SOCKET !!!!!');
+  const wss = new WebSocket.Server({ noServer: true });
+  wss.on('connection', (ctx) => {
+    // print number of active connections
+    console.log('#######connected##########', wss.clients.size);
+    // sent a message that we're good to proceed
+    ctx.send('connection established.');
+    // receive a message and Broadcast to everyone
+    ctx.on('message', (message) => {
+      pipeline.broadcastMessage(wss.clients, message);
+    });
 
-//     // handle close event
-//     ctx.on('close', () => {
-//       console.log('closed', wss1.clients.size);
-//     });
-//   });
-//   return wss;
-// }
+    // handle close event
+    ctx.on('close', () => {
+      console.log('closed', wss.clients.size);
+    });
+  });
+  return wss;
+}
+
 function setupWebSocket(server) {
   // const wss = new WebSocket.Server({ server });
   const wss1 = new WebSocket.Server({ noServer: true });
@@ -61,4 +63,4 @@ function setupWebSocket(server) {
   return { wss1, wss2 };
 }
 
-module.exports = setupWebSocket;
+module.exports = { setupWebSocket, newWebSocket };
