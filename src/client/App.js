@@ -1,38 +1,28 @@
-import React, { useState } from 'react';
+import React from 'react';
 import './app.css';
-import WebSocketTryComponent from './webSocketTryComponent';
+import {
+  BrowserRouter as Router,
+  Route,
+  useParams,
+} from 'react-router-dom';
 import BroadcasterField from './BroadcasterField';
 
 function App() {
-  const [firstName, setFirstName] = useState('');
+  return (
+    <Router>
+      <Route path="/project/:projName" component={ Broadcaster } />
+    </Router>
+  );
+}
+
+function Broadcaster() {
+  const { projName } = useParams();
   return (
     <div>
-      {/* <input name="firstName" onChange={e => setFirstName(e.target.value)} /> */}
-      <BroadcasterField />
-      <span>{firstName}</span>
+      {projName}
+      <BroadcasterField path={projName} />
     </div>
   );
 }
 
 export default App;
-
-
-// export default class App extends Component {
-//   state = { username: null };
-
-//   componentDidMount() {
-//     fetch('/api/getUsername')
-//       .then(res => res.json())
-//       .then(user => this.setState({ username: user.username }));
-//   }
-
-//   render() {
-//     const { username } = this.state;
-//     return (
-//       <div>
-//         {username ? <h1>{`Hello ${username}`}</h1> : <h1>Loading.. please wait!</h1>}
-//         <img src={ReactImage} alt="react" />
-//       </div>
-//     );
-//   }
-// }

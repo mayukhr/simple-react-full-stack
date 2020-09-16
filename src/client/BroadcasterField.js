@@ -1,13 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react';
 import useWebSocketLite from './webSocketHook';
 
-function BroadcasterField() {
+function BroadcasterField(props) {
   const [messagesList, setMessagesList] = useState([]);
   const txtRef = useRef();
-  
+  console.log('+++>>>>>', props.path);
   // use our hook
   const ws = useWebSocketLite({
-    socketUrl: 'ws://localhost:8080'
+    socketUrl: `ws://localhost:8080/${props.path}`
   });
 
   // receive messages
